@@ -14,7 +14,7 @@ public class PercolationStats {
             throw new IllegalArgumentException();
         }
 
-        float totalNumberOfSites = n * n;
+        double totalNumberOfSites = n * n;
         this.numberOfTrials = trials;
         this.x = new double[trials];
         for (int trial = 0; trial < trials; trial++) {
@@ -22,12 +22,10 @@ public class PercolationStats {
             while (!percolation.percolates()) {
                 int randomRow = StdRandom.uniform(n) + 1;
                 int randomCol = StdRandom.uniform(n) + 1;
-                if (!percolation.isOpen(randomRow, randomCol)) {
-                    percolation.open(randomRow, randomCol);
-                }
+                percolation.open(randomRow, randomCol);
             }
-            float numberOfOpenSites = percolation.numberOfOpenSites();
-            float percolationThreshold = numberOfOpenSites / totalNumberOfSites;
+            double numberOfOpenSites = percolation.numberOfOpenSites();
+            double percolationThreshold = numberOfOpenSites / totalNumberOfSites;
             x[trial] = percolationThreshold;
         }
     }
@@ -55,6 +53,13 @@ public class PercolationStats {
         return mean + ((1.96 * stddev()) / Math.sqrt(this.numberOfTrials));
     }
 
+    private double[] confidenceInterval() {
+        double[] result = new double[2];
+        result[0] = confidenceLo();
+        result[1] = confidenceHi();
+        return result;
+    }
+
     // test client
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
@@ -62,9 +67,9 @@ public class PercolationStats {
         PercolationStats stats = new PercolationStats(n, trials);
         StdOut.println("mean                    = " + stats.mean());
         StdOut.println("stddev                  = " + stats.stddev());
-        StdOut.println("95% confidence interval = "
+        StdOut.println("95% confidence interval = " + "["
                 + stats.confidenceLo() + ", "
-                + stats.confidenceHi());
+                + stats.confidenceHi() + "]");
     }
 
 }

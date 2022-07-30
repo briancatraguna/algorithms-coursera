@@ -1,11 +1,19 @@
 import java.util.*;
 
 class ThreeSum {
-    public boolean threeSum(int[] nums, int target) {
+
+    private final int[] nums;
+    private final int target;
+
+    public ThreeSum(int[] nums, int target) {
+        this.nums = nums;
+        this.target = target;
+    }
+    public boolean hasThreeSum() {
         Arrays.sort(nums);
         HashSet<Integer> integerHashed = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            integerHashed.add(nums[i]);
+        for (int num : nums) {
+            integerHashed.add(num);
         }
 
         for (int i = 0; i < nums.length; i++) {
@@ -26,9 +34,9 @@ class ThreeSum {
 
     public static void main(String[] args) {
         int[] nums = {-1, 0, 1, 2, -1, -4};
-        int target = 0;
-        ThreeSum solution = new ThreeSum();
-        System.out.println(solution.threeSum(nums, target));
+        int target = 10;
+        ThreeSum solution = new ThreeSum(nums, target);
+        System.out.println(solution.hasThreeSum());
     }
 }
 
